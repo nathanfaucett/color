@@ -8,11 +8,8 @@ var color = module.exports;
 color.ArrayType = typeof(Float32Array) !== "undefined" ? Float32Array : mathf.ArrayType;
 
 
-color.create = function(r, g, b, ArrayType) {
-    var out;
-
-    ArrayType = ArrayType !== undefined ? ArrayType : color.ArrayType;
-    out = new ArrayType(3);
+color.create = function(r, g, b) {
+    var out = new color.ArrayType(3);
 
     out[0] = r !== undefined ? r : 0;
     out[1] = g !== undefined ? g : 0;
