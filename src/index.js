@@ -1,10 +1,25 @@
-var vec3 = require("vec3");
+var mathf = require("mathf"),
+    vec3 = require("vec3");
 
 
 var color = module.exports;
 
 
-color.create = vec3.create;
+color.ArrayType = typeof(Float32Array) !== "undefined" ? Float32Array : mathf.ArrayType;
+
+
+color.create = function(r, g, b, ArrayType) {
+    var out;
+
+    ArrayType = ArrayType !== undefined ? ArrayType : color.ArrayType;
+    out = new ArrayType(3);
+
+    out[0] = r !== undefined ? r : 0;
+    out[1] = g !== undefined ? g : 0;
+    out[2] = b !== undefined ? b : 0;
+
+    return out;
+};
 
 color.copy = vec3.copy;
 
