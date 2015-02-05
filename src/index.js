@@ -20,7 +20,15 @@ color.create = function(r, g, b) {
 
 color.copy = vec3.copy;
 
-color.clone = vec3.clone;
+color.clone = function(a) {
+    var out = new color.ArrayType(3);
+
+    out[0] = a[0];
+    out[1] = a[1];
+    out[2] = a[2];
+
+    return out;
+};
 
 color.setRGB = vec3.set;
 
