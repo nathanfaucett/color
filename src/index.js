@@ -2,7 +2,7 @@ var mathf = require("mathf"),
     vec3 = require("vec3");
 
 
-var color = module.exports;
+var color = exports;
 
 
 color.ArrayType = typeof(Float32Array) !== "undefined" ? Float32Array : mathf.ArrayType;
@@ -122,15 +122,15 @@ color.setStyle = function(out, style) {
     if (rgb255.test(style)) {
         color = rgb255.exec(style);
 
-        out[0] = min(255, Number(color[1])) * inv255;
-        out[1] = min(255, Number(color[2])) * inv255;
-        out[2] = min(255, Number(color[3])) * inv255;
+        out[0] = mathf.min(255, Number(color[1])) * inv255;
+        out[1] = mathf.min(255, Number(color[2])) * inv255;
+        out[2] = mathf.min(255, Number(color[3])) * inv255;
     } else if (rgb100.test(style)) {
         color = rgb100.exec(style);
 
-        out[0] = min(100, Number(color[1])) * inv100;
-        out[1] = min(100, Number(color[2])) * inv100;
-        out[2] = min(100, Number(color[3])) * inv100;
+        out[0] = mathf.min(100, Number(color[1])) * inv100;
+        out[1] = mathf.min(100, Number(color[2])) * inv100;
+        out[2] = mathf.min(100, Number(color[3])) * inv100;
     } else if (hex6.test(style)) {
 
         out[0] = parseInt(style.substr(1, 2), 16) * inv255;
