@@ -20,7 +20,8 @@
     "grunt-jsbeautifier": ""
   },
   "dependencies": {
+    "is_number": "git://github.com/nathanfaucett/is_number.git",
     "mathf": "git://github.com/nathanfaucett/mathf.git",
-    "vec3": "nathanfaucett/vec3"
+    "vec3": "git://github.com/nathanfaucett/nathanfaucett/vec3"
   }
 }

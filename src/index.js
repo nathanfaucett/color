@@ -1,5 +1,6 @@
 var mathf = require("mathf"),
-    vec3 = require("vec3");
+    vec3 = require("vec3"),
+    isNumber = require("is_number");
 
 
 var color = exports;
@@ -79,12 +80,10 @@ var cmin = color.create(0, 0, 0),
     cmax = color.create(1, 1, 1);
 
 color.cnormalize = function(out) {
-
     return color.clamp(out, out, cmin, cmax);
 };
 
 color.str = function(out) {
-
     return "Color(" + out[0] + ", " + out[1] + ", " + out[2] + ", " + out[3] + ")";
 };
 
@@ -104,6 +103,18 @@ color.set = function(out, r, g, b) {
     }
 
     return out;
+};
+
+function to256(value) {
+    return (value * 255) | 0;
+}
+
+color.toRGB = function(out, alpha) {
+    if (isNumber(alpha)) {
+        return "rgba(" + to256(out[0]) + "," + to256(out[1]) + "," + to256(out[2]) + "," + mathf.clamp01(alpha) + ")";
+    } else {
+        return "rgb(" + to256(out[0]) + "," + to256(out[1]) + "," + to256(out[2]) + ")";
+    }
 };
 
 var rgb255 = /^rgb\((\d+),(\d+),(\d+)\)$/i,
