@@ -117,6 +117,18 @@ color.toRGB = function(out, alpha) {
     }
 };
 
+function toHEX(value) {
+    if (value < 16) {
+        return "0" + value.toString(16);
+    } else {
+        return value.toString(16);
+    }
+}
+
+color.toHEX = function(out) {
+    return "#" + toHEX(out[0]) + toHEX(out[1]) + toHEX(out[2]);
+};
+
 var rgb255 = /^rgb\((\d+),(\d+),(\d+)\)$/i,
     rgb100 = /^rgb\((\d+)\%,(\d+)\%,(\d+)\%\)$/i,
     hex6 = /^\#([0.0-9a-f]{6})$/i,
