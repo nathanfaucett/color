@@ -11,6 +11,9 @@
     "color",
     "color.js"
   ],
+  "scripts": {
+    "example": "comn -f example/index.js -o example/index.min.js"
+  },
   "author": "Nathan Faucett",
   "license": "BSD-2-Clause",
   "readmeFilename": "README.md",
@@ -22,6 +25,7 @@
   "dependencies": {
     "is_number": "git://github.com/nathanfaucett/is_number.git",
     "mathf": "git://github.com/nathanfaucett/mathf.git",
-    "vec3": "git://github.com/nathanfaucett/vec3"
+    "vec3": "git://github.com/nathanfaucett/vec3",
+    "vec4": "git://github.com/nathanfaucett/vec4"
   }
 }

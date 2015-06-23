@@ -1,5 +1,6 @@
 var mathf = require("mathf"),
     vec3 = require("vec3"),
+    vec4 = require("vec4"),
     isNumber = require("is_number");
 
 
@@ -9,75 +10,76 @@ var color = exports;
 color.ArrayType = typeof(Float32Array) !== "undefined" ? Float32Array : mathf.ArrayType;
 
 
-color.create = function(r, g, b) {
-    var out = new color.ArrayType(3);
+color.create = function(r, g, b, a) {
+    var out = new color.ArrayType(4);
 
     out[0] = r !== undefined ? r : 0;
     out[1] = g !== undefined ? g : 0;
     out[2] = b !== undefined ? b : 0;
+    out[3] = a !== undefined ? a : 1;
 
     return out;
 };
 
-color.copy = vec3.copy;
+color.copy = vec4.copy;
 
 color.clone = function(a) {
-    var out = new color.ArrayType(3);
+    var out = new color.ArrayType(4);
 
     out[0] = a[0];
     out[1] = a[1];
     out[2] = a[2];
+    out[3] = a[3];
 
     return out;
 };
 
 color.setRGB = vec3.set;
+color.setRGBA = vec4.set;
 
-color.add = vec3.add;
-color.sub = vec3.sub;
+color.add = vec4.add;
+color.sub = vec4.sub;
 
-color.mul = vec3.mul;
-color.div = vec3.div;
+color.mul = vec4.mul;
+color.div = vec4.div;
 
-color.sadd = vec3.sadd;
-color.ssub = vec3.ssub;
+color.sadd = vec4.sadd;
+color.ssub = vec4.ssub;
 
-color.smul = vec3.smul;
-color.sdiv = vec3.sdiv;
+color.smul = vec4.smul;
+color.sdiv = vec4.sdiv;
 
-color.lengthSqValues = vec3.lengthSqValues;
+color.lengthSqValues = vec4.lengthSqValues;
+color.lengthValues = vec4.lengthValues;
+color.invLengthValues = vec4.invLengthValues;
 
-color.lengthValues = vec3.lengthValues;
+color.dot = vec4.dot;
 
-color.invLengthValues = vec3.invLengthValues;
+color.lengthSq = vec4.lengthSq;
 
-color.dot = vec3.dot;
+color.length = vec4.length;
 
-color.lengthSq = vec3.lengthSq;
+color.invLength = vec4.invLength;
 
-color.length = vec3.length;
+color.setLength = vec4.setLength;
 
-color.invLength = vec3.invLength;
+color.normalize = vec4.normalize;
 
-color.setLength = vec3.setLength;
+color.lerp = vec4.lerp;
 
-color.normalize = vec3.normalize;
+color.min = vec4.min;
 
-color.lerp = vec3.lerp;
+color.max = vec4.max;
 
-color.min = vec3.min;
+color.clamp = vec4.clamp;
 
-color.max = vec3.max;
+color.equal = vec4.equal;
 
-color.clamp = vec3.clamp;
-
-color.equal = vec3.equal;
-
-color.notEqual = vec3.notEqual;
+color.notEqual = vec4.notEqual;
 
 
-var cmin = color.create(0, 0, 0),
-    cmax = color.create(1, 1, 1);
+var cmin = color.create(0, 0, 0, 0),
+    cmax = color.create(1, 1, 1, 1);
 
 color.cnormalize = function(out) {
     return color.clamp(out, out, cmin, cmax);
@@ -117,6 +119,10 @@ color.toRGB = function(out, alpha) {
     }
 };
 
+color.toRGBA = function(out) {
+    return "rgba(" + to256(out[0]) + "," + to256(out[1]) + "," + to256(out[2]) + "," + mathf.clamp01(out[3]) + ")";
+};
+
 function toHEX(value) {
     if (value < 16) {
         return "0" + value.toString(16);
@@ -129,51 +135,74 @@ color.toHEX = function(out) {
     return "#" + toHEX(out[0]) + toHEX(out[1]) + toHEX(out[2]);
 };
 
-var rgb255 = /^rgb\((\d+),(\d+),(\d+)\)$/i,
-    rgb100 = /^rgb\((\d+)\%,(\d+)\%,(\d+)\%\)$/i,
-    hex6 = /^\#([0.0-9a-f]{6})$/i,
-    hex3 = /^\#([0.0-9a-f])([0.0-9a-f])([0.0-9a-f])$/i,
-    hex3to6 = /#(.)(.)(.)/,
-    hex3to6String = "#$1$1$2$2$3$3",
-    colorName = /^(\w+)$/i,
-    inv255 = 1 / 255,
-    inv100 = 1 / 100;
-
-color.setStyle = function(out, style) {
-    var color;
-
-    if (rgb255.test(style)) {
-        color = rgb255.exec(style);
-
-        out[0] = mathf.min(255, Number(color[1])) * inv255;
-        out[1] = mathf.min(255, Number(color[2])) * inv255;
-        out[2] = mathf.min(255, Number(color[3])) * inv255;
-    } else if (rgb100.test(style)) {
-        color = rgb100.exec(style);
-
-        out[0] = mathf.min(100, Number(color[1])) * inv100;
-        out[1] = mathf.min(100, Number(color[2])) * inv100;
-        out[2] = mathf.min(100, Number(color[3])) * inv100;
-    } else if (hex6.test(style)) {
-
-        out[0] = parseInt(style.substr(1, 2), 16) * inv255;
-        out[1] = parseInt(style.substr(3, 2), 16) * inv255;
-        out[2] = parseInt(style.substr(5, 2), 16) * inv255;
-    } else if (hex3.test(style)) {
-        style = style.replace(hex3to6, hex3to6String);
-
-        out[0] = parseInt(style.substr(1, 2), 16) * inv255;
-        out[1] = parseInt(style.substr(3, 2), 16) * inv255;
-        out[2] = parseInt(style.substr(5, 2), 16) * inv255;
-    } else if (colorName.test(style)) {
-        style = colorNames[style.toLowerCase()];
-
-        out[0] = parseInt(style.substr(1, 2), 16) * inv255;
-        out[1] = parseInt(style.substr(3, 2), 16) * inv255;
-        out[2] = parseInt(style.substr(5, 2), 16) * inv255;
-    }
-
+var rgb255 = /^rgb\((\d+),(\s+)?(\d+),(\s+)?(\d+)\)$/i,
+    inv255 = 1 / 255;
+color.fromRGB = function(out, style) {
+    var values = rgb255.exec(style);
+    out[0] = mathf.min(255, Number(values[1])) * inv255;
+    out[1] = mathf.min(255, Number(values[2])) * inv255;
+    out[2] = mathf.min(255, Number(values[3])) * inv255;
     return out;
+};
+
+var rgba255 = /^rgba\((\d+),(\s+)?(\d+),(\s+)?(\d+),(\s+)?(\d+)\)$/i;
+color.fromRGBA = function(out, style) {
+    var values = rgba255.exec(style);
+    out[0] = mathf.min(255, Number(values[1])) * inv255;
+    out[1] = mathf.min(255, Number(values[2])) * inv255;
+    out[2] = mathf.min(255, Number(values[3])) * inv255;
+    out[3] = mathf.min(1, Number(values[4]));
+    return out;
+};
+
+var rgb100 = /^rgb\((\d+)\%,(\s+)?(\d+)\%,(\s+)?(\d+)\%\)$/i,
+    inv100 = 1 / 100;
+color.fromRGB100 = function(out, style) {
+    var values = rgb100.exec(style);
+    out[0] = mathf.min(100, Number(values[1])) * inv100;
+    out[1] = mathf.min(100, Number(values[2])) * inv100;
+    out[2] = mathf.min(100, Number(values[3])) * inv100;
+    return out;
+};
+
+color.fromHEX = function(out, style) {
+    out[0] = parseInt(style.substr(1, 2), 16) * inv255;
+    out[1] = parseInt(style.substr(3, 2), 16) * inv255;
+    out[2] = parseInt(style.substr(5, 2), 16) * inv255;
+    return out;
+};
+
+var hex3to6 = /#(.)(.)(.)/,
+    hex3to6String = "#$1$1$2$2$3$3";
+color.fromHEX3 = function(out, style) {
+    style = style.replace(hex3to6, hex3to6String);
+    out[0] = parseInt(style.substr(1, 2), 16) * inv255;
+    out[1] = parseInt(style.substr(3, 2), 16) * inv255;
+    out[2] = parseInt(style.substr(5, 2), 16) * inv255;
+    return out;
+};
+
+color.fromColorName = function(out, style) {
+    return color.fromHEX(out, colorNames[style.toLowerCase()]);
+};
+
+var hex6 = /^\#([0.0-9a-f]{6})$/i,
+    hex3 = /^\#([0.0-9a-f])([0.0-9a-f])([0.0-9a-f])$/i,
+    colorName = /^(\w+)$/i;
+color.setStyle = function(out, style) {
+    if (rgb255.test(style)) {
+        return color.fromRGB(out, style);
+    } else if (rgb100.test(style)) {
+        return color.fromRGB100(out, style);
+    } else if (hex6.test(style)) {
+        return color.fromHEX(out, style);
+    } else if (hex3.test(style)) {
+        return color.fromHEX3(out, style);
+    } else if (colorName.test(style)) {
+        return color.fromColorName(out, style);
+    } else {
+        return out;
+    }
 };
 
 var colorNames = color.colorNames = {
