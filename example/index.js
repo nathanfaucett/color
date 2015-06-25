@@ -12,3 +12,10 @@ color.add(a, a, b);
 color.add(c, c, a);
 
 console.log(color.toHEX(color.fromStyle(color.create(), "#f1f1f1")));
+
+var fade_color = color.create();
+function fade(style, amount) {
+    return color.toRGBA(color.smul(fade_color, color.fromStyle(fade_color, style), amount));
+}
+
+console.log(fade("#fff", 0.5));
