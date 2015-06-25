@@ -89,19 +89,21 @@ color.str = function(out) {
     return "Color(" + out[0] + ", " + out[1] + ", " + out[2] + ", " + out[3] + ")";
 };
 
-color.set = function(out, r, g, b) {
+color.set = function(out, r, g, b, a) {
     var type = typeof(r);
 
     if (type === "number") {
         out[0] = r !== undefined ? r : 0;
         out[1] = g !== undefined ? g : 0;
         out[2] = b !== undefined ? b : 0;
+        out[3] = a !== undefined ? a : 1;
     } else if (type === "string") {
-        color.setStyle(out, r);
+        color.fromStyle(out, r);
     } else if (r.length === +r.length) {
         out[0] = r[0] || 0;
         out[1] = r[1] || 0;
         out[2] = r[2] || 0;
+        out[3] = r[3] || 1;
     }
 
     return out;
@@ -124,10 +126,14 @@ color.toRGBA = function(out) {
 };
 
 function toHEX(value) {
+    value = mathf.clamp(value * 255, 0, 255) | 0;
+
     if (value < 16) {
         return "0" + value.toString(16);
-    } else {
+    } else if (value < 255) {
         return value.toString(16);
+    } else {
+        return "ff";
     }
 }
 
@@ -142,6 +148,7 @@ color.fromRGB = function(out, style) {
     out[0] = mathf.min(255, Number(values[1])) * inv255;
     out[1] = mathf.min(255, Number(values[2])) * inv255;
     out[2] = mathf.min(255, Number(values[3])) * inv255;
+    out[3] = 1;
     return out;
 };
 
@@ -162,6 +169,7 @@ color.fromRGB100 = function(out, style) {
     out[0] = mathf.min(100, Number(values[1])) * inv100;
     out[1] = mathf.min(100, Number(values[2])) * inv100;
     out[2] = mathf.min(100, Number(values[3])) * inv100;
+    out[3] = 1;
     return out;
 };
 
@@ -169,6 +177,7 @@ color.fromHEX = function(out, style) {
     out[0] = parseInt(style.substr(1, 2), 16) * inv255;
     out[1] = parseInt(style.substr(3, 2), 16) * inv255;
     out[2] = parseInt(style.substr(5, 2), 16) * inv255;
+    out[3] = 1;
     return out;
 };
 
@@ -179,6 +188,7 @@ color.fromHEX3 = function(out, style) {
     out[0] = parseInt(style.substr(1, 2), 16) * inv255;
     out[1] = parseInt(style.substr(3, 2), 16) * inv255;
     out[2] = parseInt(style.substr(5, 2), 16) * inv255;
+    out[3] = 1;
     return out;
 };
 

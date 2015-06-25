@@ -11,6 +11,4 @@ color.set(b, "#3f085f");
 color.add(a, a, b);
 color.add(c, c, a);
 
-console.log(c);
-
-console.log(c, color.length(c));
+console.log(color.toHEX(color.fromStyle(color.create(), "#f1f1f1")));
