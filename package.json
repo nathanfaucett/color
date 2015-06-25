@@ -25,7 +25,7 @@
   "dependencies": {
     "is_number": "git://github.com/nathanfaucett/is_number.git",
     "mathf": "git://github.com/nathanfaucett/mathf.git",
-    "vec3": "git://github.com/nathanfaucett/vec3",
-    "vec4": "git://github.com/nathanfaucett/vec4"
+    "vec3": "git://github.com/nathanfaucett/vec3.git",
+    "vec4": "git://github.com/nathanfaucett/vec4.git"
   }
 }
