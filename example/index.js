@@ -11,6 +11,8 @@ color.set(b, "#3f085f");
 color.add(a, a, b);
 color.add(c, c, a);
 
+console.log(color.fromRGBA(color.create(), "rgba(128, 64, 255, 0.25)"));
+
 console.log(color.toHEX(color.fromStyle(color.create(), "#f1f1f1")));
 
 var fade_color = color.create();

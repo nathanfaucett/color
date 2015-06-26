@@ -141,7 +141,7 @@ color.toHEX = function(out) {
     return "#" + toHEX(out[0]) + toHEX(out[1]) + toHEX(out[2]);
 };
 
-var rgb255 = /^rgb\((\d+),(\s+)?(\d+),(\s+)?(\d+)\)$/i,
+var rgb255 = /^rgb\((\d+),(?:\s+)?(\d+),(?:\s+)?(\d+)\)$/i,
     inv255 = 1 / 255;
 color.fromRGB = function(out, style) {
     var values = rgb255.exec(style);
@@ -152,9 +152,10 @@ color.fromRGB = function(out, style) {
     return out;
 };
 
-var rgba255 = /^rgba\((\d+),(\s+)?(\d+),(\s+)?(\d+),(\s+)?(\d+)\)$/i;
+var rgba255 = /^rgba\((\d+),(?:\s+)?(\d+),(?:\s+)?(\d+),(?:\s+)?((?:\.)?\d+(?:\.\d+)?)\)$/i;
 color.fromRGBA = function(out, style) {
     var values = rgba255.exec(style);
+    console.log(values);
     out[0] = mathf.min(255, Number(values[1])) * inv255;
     out[1] = mathf.min(255, Number(values[2])) * inv255;
     out[2] = mathf.min(255, Number(values[3])) * inv255;
@@ -162,7 +163,7 @@ color.fromRGBA = function(out, style) {
     return out;
 };
 
-var rgb100 = /^rgb\((\d+)\%,(\s+)?(\d+)\%,(\s+)?(\d+)\%\)$/i,
+var rgb100 = /^rgb\((\d+)\%,(?:\s+)?(\d+)\%,(?:\s+)?(\d+)\%\)$/i,
     inv100 = 1 / 100;
 color.fromRGB100 = function(out, style) {
     var values = rgb100.exec(style);
