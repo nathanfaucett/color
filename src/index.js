@@ -202,8 +202,7 @@ var hex6 = /^\#([0.0-9a-f]{6})$/i,
 color.fromStyle = function(out, style) {
     if (rgb255.test(style)) {
         return color.fromRGB(out, style);
-    }
-    if (rgba255.test(style)) {
+    } else if (rgba255.test(style)) {
         return color.fromRGBA(out, style);
     } else if (rgb100.test(style)) {
         return color.fromRGB100(out, style);
