@@ -81,8 +81,8 @@ color.notEqual = vec4.notEqual;
 var cmin = color.create(0, 0, 0, 0),
     cmax = color.create(1, 1, 1, 1);
 
-color.cnormalize = function(out) {
-    return color.clamp(out, out, cmin, cmax);
+color.cnormalize = function(out, a) {
+    return color.clamp(out, a, cmin, cmax);
 };
 
 color.str = function(out) {
