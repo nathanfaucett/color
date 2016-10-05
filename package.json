@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/color",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "color for the browser and node.js",
   "repository": {
     "type": "git",
@@ -31,8 +31,8 @@
   "dependencies": {
     "@nathanfaucett/is_string": "^0.0.1",
     "@nathanfaucett/is_number": "^0.0.1",
-    "@nathanfaucett/mathf": "^0.0.1",
-    "@nathanfaucett/vec3": "^0.0.1",
-    "@nathanfaucett/vec4": "^0.0.1"
+    "@nathanfaucett/mathf": "^0.0.3",
+    "@nathanfaucett/vec3": "^0.0.2",
+    "@nathanfaucett/vec4": "^0.0.2"
   }
 }
