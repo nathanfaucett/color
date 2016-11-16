@@ -75,9 +75,8 @@ color.max = vec4.max;
 
 color.clamp = vec4.clamp;
 
-color.equal = vec4.equal;
-
-color.notEqual = vec4.notEqual;
+color.equals = vec4.equals;
+color.notEquals = vec4.notEquals;
 
 
 var cmin = color.create(0, 0, 0, 0),
